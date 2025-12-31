@@ -12,10 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB 연결
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongodb:27017/vibe-study', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongodb:27017/vibe-study')
 .then(() => console.log('MongoDB 연결 성공'))
 .catch(err => console.error('MongoDB 연결 실패:', err));
 
