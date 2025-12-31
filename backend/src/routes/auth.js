@@ -32,11 +32,27 @@ router.post('/login', [
       name: user.name
     };
 
-    res.json({ 
-      success: true, 
-      user: { 
-        name: user.name 
-      } 
+    // 디버깅을 위한 로그
+    console.log('Session before save:', req.session);
+    console.log('Session ID:', req.sessionID);
+
+    // 세션 저장을 명시적으로 처리
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: '세션 저장 중 오류가 발생했습니다.' 
+        });
+      }
+      
+      console.log('Session saved successfully');
+      res.json({ 
+        success: true, 
+        user: { 
+          name: user.name 
+        } 
+      });
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -65,12 +81,16 @@ router.post('/logout', (req, res) => {
 
 // 현재 사용자 정보
 router.get('/me', (req, res) => {
+  console.log('Session ID on /me request:', req.sessionID);
+  console.log('Session data:', req.session);
+  
   if (req.session && req.session.user) {
     res.json({ 
       success: true, 
       user: req.session.user 
     });
   } else {
+    console.log('No session or user found');
     res.status(401).json({ 
       success: false, 
       message: '로그인되어 있지 않습니다.' 

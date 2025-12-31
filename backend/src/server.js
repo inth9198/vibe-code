@@ -11,6 +11,9 @@ const postRoutes = require('./routes/posts');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Render와 같은 프록시 환경을 위한 설정
+app.set('trust proxy', 1);
+
 // MongoDB 연결
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongodb:27017/vibe-study')
 .then(() => console.log('MongoDB 연결 성공'))
@@ -18,8 +21,25 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongodb:27017/vibe-study'
 
 // 미들웨어
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, etc)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      process.env.CORS_ORIGIN || 'http://localhost:5173',
+      'http://localhost:5173',
+      'https://vibe-frontend-9wxu.onrender.com'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
@@ -32,7 +52,11 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI || 'mongodb://mongodb:27017/vibe-study',
-    touchAfter: 24 * 3600 // 24시간
+    touchAfter: 24 * 3600, // 24시간
+    mongoOptions: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
   }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
