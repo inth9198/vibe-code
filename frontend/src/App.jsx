@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import PostList from './pages/PostList'
 import PostDetail from './pages/PostDetail'
 import PostForm from './pages/PostForm'
+import Slides from './pages/Slides'
+import LandingSlides from './pages/LandingSlides'
 import Header from './components/Header'
 
 function App() {
@@ -58,12 +60,12 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route 
-              path="/login" 
-              element={user ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} 
+              path="/" 
+              element={user ? <PostList user={user} /> : <LandingSlides />} 
             />
             <Route 
-              path="/" 
-              element={user ? <PostList user={user} /> : <Navigate to="/login" />} 
+              path="/login" 
+              element={user ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} 
             />
             <Route 
               path="/posts/:id" 
@@ -76,6 +78,10 @@ function App() {
             <Route 
               path="/new" 
               element={user ? <PostForm user={user} /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/slides" 
+              element={<Slides />} 
             />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

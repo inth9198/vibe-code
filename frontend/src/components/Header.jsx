@@ -18,6 +18,7 @@ function Header({ user, onLogout }) {
           <h1>🎵 바이브 스터디</h1>
         </Link>
         <nav className="nav">
+          <Link to="/slides" className="btn btn-slides">📚 강의자료</Link>
           <span className="user-name">👤 {user.name}</span>
           <Link to="/new" className="btn btn-primary">글쓰기</Link>
           <button onClick={handleLogout} className="btn btn-secondary">
