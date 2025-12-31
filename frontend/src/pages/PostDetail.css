@@ -1,0 +1,141 @@
+.post-detail-container {
+  padding: 20px 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.post-detail {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.post-header {
+  padding: 30px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.post-info {
+  flex: 1;
+}
+
+.post-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.author {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.post-content {
+  padding: 30px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  min-height: 200px;
+}
+
+.post-content p {
+  margin-bottom: 12px;
+}
+
+.post-footer {
+  padding: 20px 30px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+.btn-danger {
+  background: #ff4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #cc0000;
+}
+
+.error-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-container p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .post-header {
+    flex-direction: column;
+  }
+
+  .post-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .post-title {
+    font-size: 24px;
+  }
+
+  .post-content {
+    padding: 20px;
+  }
+}
+

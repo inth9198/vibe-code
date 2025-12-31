@@ -1,0 +1,64 @@
+# 프로덕션용 Docker Compose 설정
+services:
+  mongodb:
+    image: mongo:7
+    container_name: vibe-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-changeme}
+    networks:
+      - vibe-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: vibe-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-changeme}@mongodb:27017/vibe-study?authSource=admin
+      - SESSION_SECRET=${SESSION_SECRET}
+      - NODE_ENV=production
+      - CORS_ORIGIN=${FRONTEND_URL}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - vibe-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: vibe-frontend
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=${BACKEND_URL}
+    depends_on:
+      - backend
+    networks:
+      - vibe-network
+
+networks:
+  vibe-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+
